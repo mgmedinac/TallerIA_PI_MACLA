@@ -1,0 +1,44 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div class="container">  
+    <form action="" method="POST"> <!-- Cambia el action para enviar a la misma vista -->
+        {% csrf_token %} <!-- Asegúrate de incluir el token CSRF -->
+        <div class="mb-3">
+            <label for="searchMovie" class="form-label">
+                Search for Movie:
+            </label>
+            <input type="text" class="form-control" name="prompt" required/> <!-- Cambia el name a "prompt" -->
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>   
+
+    {% if searchTerm %}
+        <p>Searching for: {{ searchTerm }}</p> 
+    {% endif %}
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for movie in Movies %} <!-- Asegúrate de iterar sobre "recommendations" -->
+            <div class="col">
+                <div class="card">
+                    <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ movie.title }}</h5>
+                        <p class="card-text">{{ movie.description }}</p>
+                        <p class="card-text">{{ movie.genre }}</p>
+                        <p class="card-text">{{ movie.year }}</p>
+                        {% if movie.url %}
+                            <a href="{{ movie.url }}" class="btn btn-primary">Movie Link</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>    
+        {% endfor %}
+    </div>
+    <br/>
+    <br /> 
+    <br /> 
+
+</div>
+
+{% endblock content %}
