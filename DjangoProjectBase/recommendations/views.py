@@ -4,7 +4,7 @@ import os
 import json
 import numpy as np
 from openai import OpenAI
-from movie.models import Movie  # Asegúrate de que este sea el modelo correcto
+from movie.models import Movie 
 
 # Carga las API keys y otros valores de entorno
 _ = load_dotenv('api_keys_1.env')
@@ -36,7 +36,7 @@ def recommend(request):
     prompt = ""  # Inicializa el prompt
 
     if request.method == 'POST':
-        prompt = request.POST.get('prompt')  # Obtén el prompt ingresado por el usuario
+        prompt = request.POST.get('prompt')  # Obtener el prompt ingresado por el usuario
         prompt_embedding = get_embedding(prompt)  # Genera el embedding del prompt
 
         # Calcula la similitud de coseno entre el embedding del prompt y los embeddings de las películas
@@ -48,12 +48,12 @@ def recommend(request):
         # Ordena las películas por similitud (de mayor a menor)
         similarities.sort(reverse=True, key=lambda x: x[0])
 
-        # Opcional: Limita el número de recomendaciones (puedes ajustar esto)
+        #  Limita el número de recomendaciones (puedes ajustar esto)
         top_recommendations = similarities[:10]  # Obtén las 5 mejores
 
         # Añade las películas recomendadas a la lista
         for _, movie in top_recommendations:
-            # Aquí asumimos que el modelo Movie tiene el mismo título que en el JSON
+           
             db_movie = Movie.objects.filter(title__icontains=movie['title']).first()  # Obtiene la primera coincidencia
             if db_movie:
                 recommended_movies.append(db_movie)
